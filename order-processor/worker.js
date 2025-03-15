@@ -1,41 +1,45 @@
-const dotenv = require('dotenv');
-dotenv.config();
-const AWS = require('aws-sdk');
-const mongoose = require('mongoose');
-const { sendEmail } = require('./services/ses');
-const Order = require('./models/Order');
-process.removeAllListeners('warning');
+import "dotenv/config";
+import mongoose from "mongoose";
+import {
+  SQSClient,
+  ReceiveMessageCommand,
+  DeleteMessageCommand,
+} from "@aws-sdk/client-sqs";
+import { sendEmail } from "./services/ses.js";
+import { Order } from "./models/Order.js";
 
 // Connect to MongoDB
-mongoose.connect(`${process.env.MONGODB_URI}/${process.env.DB_NAME}`)
-  .then(() => console.log('Connected to MongoDB Database'))
-  .catch(err => console.error('MongoDB connection error:', err));
+mongoose
+  .connect(`${process.env.MONGODB_URI}/${process.env.DB_NAME}`)
+  .then(() => {
+    console.log("✅ Connected to MongoDB");
+  })
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// Configure AWS
-AWS.config.update({ region: process.env.AWS_REGION });
-const sqs = new AWS.SQS();
+// Configure AWS SQS Client
+const sqs = new SQSClient({ region: process.env.AWS_REGION });
 
 const processOrder = async (message) => {
   const order = JSON.parse(message.Body);
   try {
-    // Simulate order processing
-    order.status = 'Processed';
-    await Order.findByIdAndUpdate(order._id, { status: 'Processed' });
+    //order processing code goes here
+
+    await Order.findByIdAndUpdate(order._id, { status: "Processed" });
+
     await sendEmail(
-      'technicalkhan786@gmail.com',
-      'Order Processed',
-      `Your order ${order._id} has been processed.`
+      order.email,
+      `🎉 Order Confirmation: #${order._id} Successfully Processed!`,
+      `Dear Customer We are thrilled to inform you that your order (#${order._id}) has been successfully processed! 🎊. Thank you for choosing us! If you have any questions, feel free to reach out.`
     );
-    console.log(`Order ${order._id} processed successfully`);
+    console.log(`✅ Order ${order._id} processed successfully`);
   } catch (err) {
-    console.error(`Failed to process order ${order._id}:`, err);
-    order.status = 'Failed';
-    await Order.findByIdAndUpdate(order._id, { status: 'Failed' });
+    console.error(`❌ Failed to process order ${order._id}:`, err);
+    await Order.findByIdAndUpdate(order._id, { status: "Failed" });
   }
 };
 
 const startWorker = () => {
-  console.log("Worker has Started");
+  console.log("🚀 Worker has started...");
   const params = {
     QueueUrl: process.env.SQS_QUEUE_URL,
     MaxNumberOfMessages: 10,
@@ -43,17 +47,22 @@ const startWorker = () => {
   };
 
   setInterval(async () => {
-    const data = await sqs.receiveMessage(params).promise();
-    if (data.Messages) {
-      for (const message of data.Messages) {
-        await processOrder(message);
-        await sqs.deleteMessage({
-          QueueUrl: process.env.SQS_QUEUE_URL,
-          ReceiptHandle: message.ReceiptHandle,
-        }).promise();
+    try {
+      const { Messages } = await sqs.send(new ReceiveMessageCommand(params));
+      if (Messages) {
+        for (const message of Messages) {
+          await processOrder(message);
+          await sqs.send(
+            new DeleteMessageCommand({
+              QueueUrl: process.env.SQS_QUEUE_URL,
+              ReceiptHandle: message.ReceiptHandle,
+            })
+          );
+        }
       }
+    } catch (error) {
+      console.error("❌ Error receiving messages:", error);
     }
-    else console.log("No Messages")
   }, 5000);
 };
 
