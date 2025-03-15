@@ -72,11 +72,10 @@ node worker.js
 ### Order Service API (Example)
 | Method | Endpoint       | Description          |
 |--------|--------------|----------------------|
-| GET    | /orders      | Fetch all orders    |
 | POST   | /orders      | Create a new order  |
 | GET    | /orders/:id  | Get order by ID     |
 
-*(More API details to be added based on implementation)*
+
 
 ---
 
@@ -106,6 +105,11 @@ This project is open-source under the [MIT License](LICENSE).
 
 ## 📧 Contact
 For any queries, reach out at **faisalkhan9354@gmail.com**.
+
+---
+
+## 📜 API Documentation
+A Postman Collection is provided in the repository to test the API endpoints. Simply import it into Postman to get started!
 
 ---
 
