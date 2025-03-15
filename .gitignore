@@ -1,0 +1,4 @@
+/node_modules/
+order-service/node_modules/
+/order-processor/node_modules/
+*.env
