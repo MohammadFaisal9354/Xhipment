@@ -14,7 +14,6 @@
     "@aws-sdk/client-ses": "^3.758.0",
     "@aws-sdk/client-sqs": "^3.758.0",
     "dotenv": "^16.4.7",
-    "mongoose": "^8.12.1",
-    "redis": "^4.7.0"
+    "mongoose": "^8.12.1"
   }
 }

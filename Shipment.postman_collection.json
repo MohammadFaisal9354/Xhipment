@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "a1720231-a666-4992-80e2-c61e9789f05c",
+		"name": "Shipment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27152496"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"technicalkhan786@gmail.com\",\n    \"password\":\"Testing1@\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"technicalkhan786@gmail.com\",\n    \"password\":\"Testing1@\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2Q1NWMxMjU5ZmI3MGY4ZjViMDFmNmIiLCJpYXQiOjE3NDIwMzYwMTcsImV4cCI6MTc0MjY0MDgxN30._T2-HeduR4ew7WRayLMogeeAIbkw7Gwmobb3P7oWmJQ\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/auth/refresh",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Get Order",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2Q1NGMwZTZhNDRmYzM0ZWY1MzhmOGQiLCJpYXQiOjE3NDIwMzI3OTgsImV4cCI6MTc0MjAzNjM5OH0.7oknR1qj7BV2amMZjyEyM-RSxgQsxwUWQJ4sgGzp78s",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/api/orders/67d54c0e6a44fc34ef538f8d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"orders",
+								"67d54c0e6a44fc34ef538f8d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Dummy inventory products",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2Q1NGMwZTZhNDRmYzM0ZWY1MzhmOGQiLCJpYXQiOjE3NDIwMzI3OTgsImV4cCI6MTc0MjAzNjM5OH0.7oknR1qj7BV2amMZjyEyM-RSxgQsxwUWQJ4sgGzp78s",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/api/orders/inventory/add-products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"orders",
+								"inventory",
+								"add-products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2Q1NWMxMjU5ZmI3MGY4ZjViMDFmNmIiLCJpYXQiOjE3NDIwNDA3MDIsImV4cCI6MTc0MjA0NDMwMn0.1XR-1WKlpClqj2bqgAqMoXKuEH7t0EkfzzmAR-0fqN4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"totalAmount\":5000,\n    \"items\":[\n        {\n            \"productId\":\"prod001\",\n            \"quantity\":16\n        },\n        {\n            \"productId\":\"prod002\",\n            \"quantity\":3\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
